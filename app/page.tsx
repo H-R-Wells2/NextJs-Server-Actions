@@ -1,10 +1,6 @@
-import { revalidateTag } from "next/cache";
-
-export interface Product {
-  id?: number;
-  product: string;
-  price: string;
-}
+import { addProductToDatabase } from "@/actions/serverAtions";
+import AddProductButton from "@/components/AddProductButton";
+import { Product } from "@/typing";
 
 export default async function Home() {
   const res = await fetch(
@@ -18,30 +14,6 @@ export default async function Home() {
   );
 
   const products: Product[] = await res.json();
-
-  const addProductToDatabase = async (e: FormData) => {
-    "use server";
-
-    const product = e.get("product")?.toString();
-    const price = e.get("price")?.toString();
-
-    if (!product || !price) return null;
-
-    const newProduct: Product = {
-      product,
-      price,
-    };
-
-    await fetch("https://653e400cf52310ee6a9abc15.mockapi.io/products", {
-      method: "POST",
-      body: JSON.stringify(newProduct),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    revalidateTag("products");
-  };
 
   return (
     <div className="pt-4 pb-8">
@@ -70,10 +42,16 @@ export default async function Home() {
       <h2 className="text-center my-8 font-semibold text-2xl">
         List of Products
       </h2>
+      <div className="flex justify-center mb-8">
+      <AddProductButton />
+      </div>
 
       <div className="flex flex-wrap justify-center gap-5 mx-10">
         {products.map((product) => (
-          <div key={product.id} className="p-5 shadow">
+          <div
+            key={product.id}
+            className="p-5 shadow shadow-blue-400 rounded-lg"
+          >
             <p>{product.product}</p>
             <p>${product.price}</p>
           </div>
