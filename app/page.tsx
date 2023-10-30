@@ -1,5 +1,6 @@
 import { addProductToDatabase } from "@/actions/serverAtions";
 import AddProductButton from "@/components/AddProductButton";
+import ProductCard from "@/components/ProductCard";
 import { Product } from "@/typing";
 
 export default async function Home() {
@@ -48,13 +49,7 @@ export default async function Home() {
 
       <div className="flex flex-wrap justify-center gap-5 mx-10">
         {products.map((product) => (
-          <div
-            key={product.id}
-            className="p-5 shadow shadow-blue-400 rounded-lg"
-          >
-            <p>{product.product}</p>
-            <p>${product.price}</p>
-          </div>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>

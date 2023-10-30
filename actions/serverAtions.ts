@@ -24,3 +24,13 @@ export const addProductToDatabase = async (e: FormData) => {
 
   revalidateTag("products");
 };
+
+export const removeProductFromDatabase = async (id: number | undefined) => {
+  if (!id) return;
+
+  await fetch(`https://653e400cf52310ee6a9abc15.mockapi.io/products/${id}`, {
+    method: "DELETE",
+  });
+
+  revalidateTag("products");
+};
